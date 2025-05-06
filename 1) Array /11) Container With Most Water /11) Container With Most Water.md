@@ -1,16 +1,12 @@
 # [11. Container With Most Water](https://leetcode.com/problems/container-with-most-water/description/)
 
 ## Problem Statement
-You are given an integer array height of length n.  
-There are n vertical lines such that the two endpoints of the `i-th` line are at `(i, 0)` and `(i, height[i])`.  
-Find two lines that, together with the x-axis, form a container such that the container contains the most water.  
-Return the maximum amount of water a container can store.  
+Given n non-negative integers, each representing a vertical line on the x-axis with height height[i],
+> Find two lines such that they form a container that holds the most water.
 
-**Constraints:**  
-Only one valid pair will exist.  
-You can't use the same element twice (i.e., don’t reuse index).  
-Return the indices, not the values.  
-
+Each vertical line is at coordinate i, and container's area =
+> min(height[i], height[j]) × (j - i)  
+ 
 **Example**
 ```python
 Input: prices = [7,1,5,3,6,4]
@@ -26,42 +22,32 @@ Input: height = [1,1]
 Output: 1
 ```
 ## Possible Solutions – Brute Force to Optimized
-## 1) Brute Force Approach – Try all combinations ( Time: O(2^n) — very slow, Space: O(n))  
-Idea: Try all possible buy/sell combinations recursively.  
-
+## 1) Brute Force Approach – Try all pairs (Time: O(n^2), Space: O(1))  
+Idea: सगळ्या possible pairs (i, j) check karaycha ani प्रत्येक time la `max area` track karaycha  
 ```python
-def helper(i, holding):
-  if i == len(prices): return 0
-  profit = helper(i + 1, holding)  # Choice 1: Do nothing
-  if holding: profit = max(profit, prices[i] + helper(i + 1, False))  # Choice 2: Sell today
-  else: profit = max(profit, -prices[i] + helper(i + 1, True))  # Choice 3: Buy today
-  return profit
-return helper(0, False)
-```
-## 2) Peak-Valley Approach (O(n) time, O(1) space)  
-**Logic:**  
-Find every increasing segment: buy at valley, sell at peak.  
-Add profit of each such transaction.  
-```python
-i = 0
-profit = 0
-while i < len(prices) - 1:
-  while i < len(prices)-1 and prices[i] >= prices[i+1]: i += 1
-  buy = prices[i]
-  while i < len(prices)-1 and prices[i] <= prices[i+1]: i += 1
-  sell = prices[i]
-  profit += sell - buy
-return profit
+max_area = 0
+n = len(height)
+for i in range(n):
+  for j in range(i+1, n):
+    curr_area = min(height[i], height[j]) * (j - i)
+    max_area = max(max_area, curr_area)
+return max_area
 ```
 
-## 3) Optimized - Greedy Solution (O(n) time, O(1) space)  
-**Idea:** जेव्हा price increase होतं (i.e. prices[i+1] > prices[i]) तेव्हा आपण profit कमवू शकतो. म्हणून जिथे जिथे increase आहे तिथे तितका profit add करा.  
-> We don't need to track exact buy/sell days. Just add all upward differences
+## 3) Optimized - Two-Pointer Technique (O(n) time, O(1) space)  
+**Idea:** Start with two pointers: one at the start (`left`) and one at the end (`right`).  
+Calculate area between them, and move the **pointer pointing to the shorter line inward.** and keep track of `max_area`
 
+> Why move the shorter line?  
+> Because the height is limiting — moving the taller one does not help increase area, but moving the shorter might.  
 ```python
-profit = 0
-for i in range(1, len(prices)):
-  if prices[i] > prices[i - 1]: profit += prices[i] - prices[i - 1]
-return profit
+left, right = 0, len(height) - 1
+max_area = 0
+while left < right:
+  curr_area = min(height[left], height[right]) * (right - left)
+  max_area = max(max_area, curr_area)
+  if height[left] < height[right]: left += 1
+  else: right -= 1
+return max_area
 ```
 
