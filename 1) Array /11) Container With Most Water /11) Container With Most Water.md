@@ -1,11 +1,10 @@
 # [11. Container With Most Water](https://leetcode.com/problems/container-with-most-water/description/)
 
 ## Problem Statement
-You are given an array `prices[]` where `prices[i]` is the price of a stock on day `i`.  
-You can buy and sell the stock multiple times (but not multiple stocks at once).    
-**Your goal: Maximize total profit**  
-> एका दिवसात फक्त एक stock विकत घेता येतो किंवा विकता येतो  
-> एकाच वेळी multiple transactions allowed नाहीत, पण एक विकल्यावर लगेच दुसरा खरेदी करता येतो.  
+You are given an integer array height of length n.  
+There are n vertical lines such that the two endpoints of the `i-th` line are at `(i, 0)` and `(i, height[i])`.  
+Find two lines that, together with the x-axis, form a container such that the container contains the most water.  
+Return the maximum amount of water a container can store.  
 
 **Constraints:**  
 Only one valid pair will exist.  
@@ -18,20 +17,13 @@ Input: prices = [7,1,5,3,6,4]
 Output: 7
 
 Explanation: 
-Buy on day 2 (price = 1) and sell on day 3 (price = 5), profit = 4  
-Buy on day 4 (price = 3) and sell on day 5 (price = 6), profit = 3  
-Total profit = 4 + 3 = 7
+Input: height = [1,8,6,2,5,4,8,3,7]
+Output: 49
+Explanation: Lines at index 1 and 8 (height=8 and 7) give area = 7 * (8 - 1) = 49
 ```
 ```python
-Input: prices = [1,2,3,4,5]
-Output: 4
-Explanation: Buy on day 1 (price = 1) and sell on day 5 (price = 5), profit = 5-1 = 4.
-Total profit is 4.
-```
-```python
-Input: prices = [7,6,4,3,1]
-Output: 0
-Explanation: There is no way to make a positive profit, so we never buy the stock to achieve the maximum profit of 0.
+Input: height = [1,1]
+Output: 1
 ```
 ## Possible Solutions – Brute Force to Optimized
 ## 1) Brute Force Approach – Try all combinations ( Time: O(2^n) — very slow, Space: O(n))  
