@@ -1,71 +1,86 @@
 # [442. Find All Duplicates in an Array](https://leetcode.com/problems/find-all-duplicates-in-an-array/description/)
 
 ## Problem Statement
-Given an integer array nums, move all 0's to the end without changing the relative order of the non-zero elements.  
-> Do it in-place with O(1) extra space and try to minimize the total number of operations.  
+Given an integer array nums of length n where all the integers are in the range [1, n], some elements appear twice and others appear once.  
+Return all the elements that appear twice in any order.   
+> n == nums.length  
+> Each integer appears once or twice only  
+> Use O(n) time and preferably O(1) extra space (excluding output)    
 
 **Example**
 ```python
-Input: nums = [0,1,0,3,12]
-Output: [1,3,12,0,0]
+Input: nums = [4,3,2,7,8,2,3,1]
+Output: [2,3]
 ```
 ```python
-Input: nums = [0]
-Output: [0]
+Input: nums = [1,1,2]
+Output: [1]
 ```
-> Zeroes नंतर ढकलायचे आहेत आणि बाकीचे क्रम टिकवायचे आहेत. म्हणजेच non-zero values ला पुढे आणायचं आणि उरलेली जागा 0 ने भरायची.
 
 ## Possible Solutions – Brute Force to Optimized
-## 1) Brute Force Approach – using extra array (Not in-place) (O(n²) time, O(1) space)
+## 1) Brute Force Approach – Nested Loop (Time: O(n^2), Space: O(n))
+> For every element, check how many times it appears using count.  
+> Not efficient, but works for small input.  
+> Time: O(n²) → as `nums.count(i)` is O(n)  
+
 ```python
 res = []
 for n in nums:
-    if n != 0: res.append(n)
-while len(res) < len(nums): res.append(0)
-for i in range(len(nums)): nums[i] = res[i]
+    if nums.count(n) == 2 and n not in res: res.append(n)
+return res
 ```
-apann ithe `while len(res) < len(nums): res.append(0)` chya jagi `no. of zeros` cha count kadhun direct ek line madhe **extend** karu shakto , like this 
+## 2) Hash Map / Set (Extra Space) (Time: O(n), Space: O(n))
+Use a set to track seen elements. If an element is already in the set, it is a duplicate.  
 ```python
-zero_count = len(nums) - len(res)
-res.extend([0] * zero_count)
-# or like this
-res.extend([0] * (len(nums) - len(res)))
-```
-ani apann `for i in range(len(nums)): nums[i] = res[i]` chya jagi direct asa lihu shakto `nums[:] = res`   
-
-## 1) Dusri method – using extra array (Not in-place) 
-```python
-res = [0]*len(nums)
-i=0
+seen = set()
+res = []
 for n in nums:
-    if n != 0: 
-        res[i] = n
-        i+=1
-nums[:] = res
+    if num in seen: res.append(n)
+    else: seen.add(n)
+return res
 ```
-## 2) Two-pass Approach (In-place, O(n) time, O(1) space)
-**Idea:**  
-1st pass: Copy non-zero elements to the front  
-2nd pass: Fill rest of array with zeroes  
+### OR
+Store frequency of each number using a dictionary.  
 ```python
-j = 0
-for i in range(len(nums)):
-    if nums[i] != 0:
-        nums[j] = nums[i]
-        j += 1
-for i in range(j, len(nums)): nums[i] = 0
+freq = {}
+res = []
+for n in nums:
+    freq[n] = freq.get(n, 0) + 1
+for n, cnt in freq.items():
+    if cnt == 2: res.append(n)
+return res
 ```
-## 3) Optimized - Swap Method - Single Pass (O(n) time, O(1) space)
-> **Idea Behind This Approach:**    
-> `i` म्हणजे loop index, `j` म्हणजे non-zero value ठेवायची जागा.  
-> जर `nums[i] ≠ 0` असेल, तर त्याला `nums[j]` शी swap करा.  
-> हे करायचं कारण म्हणजे `0` च्या जागी non-zero घालायचा आणि `0` मागे ढकलायचं.  
+### OR - We can Directly use built-in function
+> Python चा `collections.Counter()` वापर.  
+> Count == 2 असेल तर त्या key ला result मध्ये टाक.
 
 ```python
-j = 0
-for i in range(len(nums)):
-    if nums[i] != 0:
-        nums[i], nums[j] = nums[j], nums[i]
-        j += 1
+from collections import Counter
+
+def findDuplicates(nums):
+    freq = Counter(nums)
+    return [n for n, cnt in freq.items() if cnt == 2]
+```
+
+## 3) Optimized - index marking technique / In-place Sign Flipping - (O(n) time, O(1) extra space)
+Given की:  
+> `1 <= nums[i] <= n`  
+> Since `nums[i]` ranges from 1 to n, we can use `index = abs(num) - 1` and flip the sign at that index.
+> If the value at that index is already negative, it means we've seen it before = duplicate.
+> आपण original array ला modify करू शकतो.  
+> त्यामुळे आपण index marking technique वापरू.
+
+Idea:
+> प्रत्येक number `num`, त्याचं absolute value घ्या ➔ `index = abs(num) - 1 `  
+> त्या index च्या value ला negative करा.  
+> जर already negative असेल ➔ मग तो number duplicate आहे.  
+
+```python
+res = []
+for n in nums:
+    index = abs(n) - 1
+    if nums[index] < 0: res.append(abs(n))
+    else: nums[index] = -nums[index]
+return res
 ```
 
