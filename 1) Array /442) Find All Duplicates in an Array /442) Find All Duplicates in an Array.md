@@ -1,4 +1,4 @@
-# [283. Move Zeroes](https://leetcode.com/problems/move-zeroes/description/)
+# [442. Find All Duplicates in an Array](https://leetcode.com/problems/find-all-duplicates-in-an-array/description/)
 
 ## Problem Statement
 Given an integer array nums, move all 0's to the end without changing the relative order of the non-zero elements.  
