@@ -41,13 +41,13 @@ So we store `prefix_sum` frequencies in a hashmap to check how many times `curre
 
 ```python
 count = 0
-prefix_sum = 0
+psum = 0
 mapp = {0: 1}  # to count subarrays starting at index 0
 
 for n in nums:
-  prefix_sum += n
-  if prefix_sum - k in mapp: count += mapp[prefix_sum - k]
-  mapp[prefix_sum] = mapp.get(prefix_sum, 0) + 1
+  psum += n
+  if psum - k in mapp: count += mapp[psum - k]
+  mapp[psum] = mapp.get(psum, 0) + 1
 return count
 ```
 
@@ -63,12 +63,12 @@ mapp = defaultdict(int)
 mapp[0] = 1  # for subarrays starting from index 0
 
 count = 0
-current_sum = 0
+psum = 0
 
 for n in nums:
-  current_sum += n
-  count += mapp[current_sum - k]
-  mapp[current_sum] += 1
+  psum += n
+  count += mapp[psum - k]
+  mapp[psum] += 1
 return count
 ```
 
