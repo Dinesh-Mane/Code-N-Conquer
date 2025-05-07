@@ -44,10 +44,10 @@ for i in range(1, k+1):
   left_sum[i] = left_sum[i - 1] + cardPoints[i - 1]
   right_sum[i] = right_sum[i - 1] + cardPoints[-i]
 
-max_score = 0
+max_sum = 0
 for i in range(k + 1):
-  max_score = max(max_score, left_sum[i] + right_sum[k - i])
-return max_score
+  max_sum = max(max_sum, left_sum[i] + right_sum[k - i])
+return max_sum
 ```
 > ✅ Decent, but uses extra space
 ## 3) Two Pointers (Greedy Sliding Concept) (Time: O(k), Space: O(1))  
