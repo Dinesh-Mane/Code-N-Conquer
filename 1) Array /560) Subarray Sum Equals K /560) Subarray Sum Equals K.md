@@ -1,125 +1,74 @@
 # [560. Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/description/)
 
 ## Problem Statement
-You are given an array nums, return all the unique triplets [nums[i], nums[j], nums[k]] such that:
-```python
-i ≠ j ≠ k  
-nums[i] + nums[j] + nums[k] == 0
-```
-The solution must not contain duplicate triplets. 
-> Same triplet in different order = duplicate. Avoid that.  
-> Return list of lists with unique triplets.  
-> Elements can be negative or positive.  
+Given an integer array `nums` and an integer `k`, return the total number of continuous subarrays whose sum equals to `k`.  
 
 **Example**
 ```python
-Input: nums = [-1,0,1,2,-1,-4]
-Output: [[-1,-1,2],[-1,0,1]]
+Input: nums = [1,1,1], k = 2
+Output: 2
+Explanation: [1,1] appears twice
 ```
 ```python
-Input: nums = [0,1,1]
-Output: []
-```
-```python
-Input: nums = [0,0,0]
-Output: [[0,0,0]]
+Input: nums = [1,2,3], k = 3
+Output: 2
 ```
 ## Possible Solutions – Brute Force to Optimized
-## 1) Brute Force Approach – Try every triplet (Time: O(n³), Space: O(n² => due to storing triplets))  
+## 1) Brute Force Approach – Double Loop with Running Sum - (Time: O(n²), Space: O(1))  
 **Logic:**
-> 3 nested loops – i, j, k  
-> Check if `nums[i] + nums[j] + nums[k] == 0`  
-> Use set to store unique sorted triplets  
+> Try all possible subarrays and check their sum.  
+> TLE for large input
+
 ```python
-n = len(nums)
-result = set()
-for i in range(n):
-  for j in range(i+1, n):
-    for k in range(j+1, n):
-      if nums[i] + nums[j] + nums[k] == 0:
-        triplet = tuple(sorted([nums[i], nums[j], nums[k]]))
-        result.add(triplet)
-return list(result)
-```
-
-## 2) Optimized - Sorting + Two-Pointer Technique (O(n²) time, O(1) space if result is not counted, O(k) for storing triplets)  
-> This is an example of: "K Sum" Pattern  
-> Fix 1 element → solve remaining (2Sum) using two-pointer
-
-**Logic:**  
-Sort the array.  
-Loop `i` from `0` to `n-3`   
-> Skip duplicates for `i`
-
-For every i, use 2 pointers → `left = i+1`, `right = n-1`  
-Calculate sum = `nums[i] + nums[left] + nums[right]`    
-> If sum < 0 ➝ increase `left`  
-> If sum > 0 ➝ decrease `right`  
-> If sum == 0 ➝ store triplet, skip duplicates for `left` & `right`    
-```python
-nums.sort()
-res = []
-
+count = 0
 for i in range(len(nums)):
-  if i > 0 and nums[i] == nums[i-1]: continue  # skiping duplicates for i
-
-  left = i + 1
-  right = len(nums) - 1
-
-  while left < right:
-    s = nums[i] + nums[left] + nums[right]
-    if s < 0: left += 1
-    elif s > 0: right -= 1
-    else:
-      res.append([nums[i], nums[left], nums[right]])
-      while left < right and nums[left] == nums[left + 1]: left += 1   # skiping duplicates for left
-      while left < right and nums[right] == nums[right - 1]: right -= 1   # skiping duplicates for right
-      left += 1
-      right -= 1
-return res
+  sum = 0
+  for j in range(i, len(nums)):
+    sum += nums[j]
+    if sum == k: count += 1
+return count
 ```
 
-## 3) Generalized kSum (Reusable for 2Sum, 3Sum, 4Sum...)
-🧠 Idea:
-> Write a recursive kSum function.  
-> Reduce it down to 2Sum problem.  
-> Reusable & scalable for k = 4, 5, etc.
+## 2) Optimized - Prefix Sum + HashMap (O(n) time, O(n) space)  
+If we define `prefix_sum[i]` as the sum of `nums[0...i]`,  
+then if `prefix_sum[j] - prefix_sum[i] == k`,  
+that means subarray `nums[i+1...j]` sums to `k`.  
+So we store `prefix_sum` frequencies in a hashmap to check how many times `current_sum - k` has occurred.  
+
+**Steps:**  
+> Maintain a running sum
+> Use a hash map to store how many times a prefix sum has occurred
 
 ```python
-def fourSum(nums, target):
-    def kSum(nums, target, k):
-        res = []
-        if not nums:
-            return res
+count = 0
+prefix_sum = 0
+prefix_map = {0: 1}  # to count subarrays starting at index 0
 
-        # Early termination
-        avg_val = target // k
-        if avg_val < nums[0] or avg_val > nums[-1]:
-            return res
+for num in nums:
+  prefix_sum += num
+  if prefix_sum - k in prefix_map: count += prefix_map[prefix_sum - k]
+  prefix_map[prefix_sum] = prefix_map.get(prefix_sum, 0) + 1
+return count
+```
 
-        # Base case: 2Sum using two pointers
-        if k == 2:
-            left, right = 0, len(nums) - 1
-            while left < right:
-                s = nums[left] + nums[right]
-                if s == target:
-                    res.append([nums[left], nums[right]])
-                    left += 1
-                    while left < right and nums[left] == nums[left-1]:
-                        left += 1
-                elif s < target:
-                    left += 1
-                else:
-                    right -= 1
-        else:
-            for i in range(len(nums)):
-                if i == 0 or nums[i-1] != nums[i]:
-                    for subset in kSum(nums[i+1:], target - nums[i], k - 1):
-                        res.append([nums[i]] + subset)
+## OR
+🧠 Idea:  
+> Traverse the array and compute cumulative prefix_sum.  
+> At each step, check if (prefix_sum - k) is already in the hashmap.  
+> Keep adding prefix_sum to the hashmap for future reference.  
 
-        return res
+```python
+from collections import defaultdict
+prefix_sum_count = defaultdict(int)
+prefix_sum_count[0] = 1  # for subarrays starting from index 0
 
-    nums.sort()
-    return kSum(nums, target, 4)
+count = 0
+current_sum = 0
+
+for n in nums:
+  current_sum += n
+  count += prefix_sum_count[current_sum - k]
+  prefix_sum_count[current_sum] += 1
+return count
 ```
 
