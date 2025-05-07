@@ -36,8 +36,8 @@ that means subarray `nums[i+1...j]` sums to `k`.
 So we store `prefix_sum` frequencies in a hashmap to check how many times `current_sum - k` has occurred.  
 
 **Steps:**  
-> Maintain a running sum
-> Use a hash map to store how many times a prefix sum has occurred
+> Maintain a running sum  
+> Use a hash map to store how many times a prefix sum has occurred  
 
 ```python
 count = 0
