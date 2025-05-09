@@ -34,7 +34,7 @@ for i in range(n):
 return max_area
 ```
 
-## 3) Optimized - Two-Pointer Technique (O(n) time, O(1) space)  
+## 2) Optimized - Two-Pointer Technique (O(n) time, O(1) space)  
 **Idea:** Start with two pointers: one at the start (`left`) and one at the end (`right`).  
 Calculate area between them, and move the **pointer pointing to the shorter line inward.** and keep track of `max_area`
 
