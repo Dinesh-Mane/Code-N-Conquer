@@ -52,7 +52,8 @@ while slow != fast:
   fast = fast.next
 return slow  # Start of cycle
 ```
-
+`else:` can be directly used after a `while` or `for` loop.  
+It runs only when the loop completes naturally, without hitting a `break`.  
 
 ## Bonus: Modify Node Structure (Use Extra Flag or Marker)
 > Only for educational or custom node structure cases – Not allowed in LeetCode!
