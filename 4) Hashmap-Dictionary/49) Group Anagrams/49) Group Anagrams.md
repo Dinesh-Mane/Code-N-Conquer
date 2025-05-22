@@ -54,14 +54,11 @@ return res
 - Append words into the corresponding list
 
 ```python
-from collections import defaultdict
-
-def groupAnagrams(strs):
-  anagrams = defaultdict(list)
-  for word in strs:
-    key = ''.join(sorted(word))  # O(k log k)
-    anagrams[key].append(word)
-return list(anagrams.values())
+res = defaultdict(list)
+for w in strs:
+  key = ''.join(sorted(w))  # sort karun parat string madhe convert karat ahe
+  res[key].append(w)
+return list(res.values())
 ```
 > Pros: Fast and easy to implement, Clean structure and Most commonly accepted in interviews
 
