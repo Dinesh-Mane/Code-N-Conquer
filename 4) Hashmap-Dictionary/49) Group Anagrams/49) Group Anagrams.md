@@ -68,17 +68,14 @@ return list(res.values())
 2. Use the count tuple as key since it uniquely identifies an anagram group
 
 ```python
-from collections import defaultdict
-
-def groupAnagrams(strs):
-  anagrams = defaultdict(list)   
-  for word in strs:
-    count = [0] * 26
-    for char in word:
-      count[ord(char) - ord('a')] += 1
-    key = tuple(count)  # make it hashable
-    anagrams[key].append(word)
-return list(anagrams.values())
+res = defaultdict(list)
+for w in strs:
+  cnt = [0]*26
+  for c in w:
+    cnt[ord(c)-ord('a')]+=1
+  key = tuple(cnt)
+  res[key].append(w)
+return list(res.values())
 ```
 **Why this is better:**
 - Avoids sorting (k log k → becomes just k)
