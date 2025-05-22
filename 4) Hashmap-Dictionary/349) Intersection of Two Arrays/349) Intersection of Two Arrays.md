@@ -84,3 +84,15 @@ return list(res)
 return list(set(nums1) & set(nums2))
 ```
 
+## Jr aplyala union kadhaycha asel two lists cha:
+**Set Union in Python**: To find the union of two arrays (i.e., all unique elements present in either array), you can use:
+
+### 1. Using union operator |
+```python
+return list(set(nums1) | set(nums2))
+```
+### 2. Using set.union() method
+```python
+return list(set(nums1).union(set(nums2)))
+```
+Both versions will give the same result – a list of all unique elements from both arrays.
