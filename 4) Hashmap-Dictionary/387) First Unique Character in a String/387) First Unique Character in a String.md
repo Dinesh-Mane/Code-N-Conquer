@@ -18,8 +18,6 @@ Output: -1  # All characters repeat
 ```
 ## Possible Solutions – Brute Force to Optimized
 ## 1) One-Liner (Not recommended for interviews but cool for contests)
-**Idea:** Use Python’s built-in set intersection operator (`&`) to get common unique values.
-
 ```python
 return min([s.index(ch) for ch in set(s) if s.count(ch) == 1], default=-1)
 ```
