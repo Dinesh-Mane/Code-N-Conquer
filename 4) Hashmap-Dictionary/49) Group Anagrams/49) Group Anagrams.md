@@ -87,13 +87,10 @@ return list(res.values())
 **Idea:** Use Counter (dictionary subclass) as the key – but since Counter isn't hashable, convert to a `frozenset` or `tuple`.
 
 ```python
-from collections import defaultdict, Counter
-
-def groupAnagrams(strs):
-  anagrams = defaultdict(list)
-  for word in strs:
-    key = tuple(sorted(Counter(word).items()))  # make it hashable
-    anagrams[key].append(word)       
-return list(anagrams.values())
+res = defaultdict(list)
+for w in strs:
+  key = tuple(sorted(Counter(w).items()))
+  res[key].append(w)
+return list(res.values())
 ```
 >  Clean but: Slightly heavier due to Counter object and sorting items
