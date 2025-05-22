@@ -87,6 +87,7 @@ return list(anagrams.values())
 - Avoids sorting (k log k → becomes just k)
 - Works faster for longer strings
 
+> Best Optimized Approach for Interviews
 
 ## OR Using `collections.Counter` – Readable Alternative (O(n * k) Time, O(n * k) Space)
 **Idea:** Use Counter (dictionary subclass) as the key – but since Counter isn't hashable, convert to a `frozenset` or `tuple`.
