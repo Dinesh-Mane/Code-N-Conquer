@@ -29,11 +29,15 @@ return " ".join(reversed_words)             # join back
 ```
 > Works well and easy to implement, but not in-place
 
-## 2) Slight Optimization – Using List Comprehension ( Time: O(n), Space: O(n) )
+## 2) Slight Optimization ( Time: O(n), Space: O(n) )
 **Idea:** Same logic as above but compressed.  
 **In-place? -> No**  
 ```python
 return ' '.join([w[::-1] for w in s.split()])
+```
+OR
+```python
+return ' '.join(w[::-1] for w in s.split())
 ```
 > Pythonic and clean, but still O(n) space.
 
@@ -93,7 +97,7 @@ for end in range(len(s)):
   if s[end] == ' ':
     reverse(start, end - 1)
     start = end + 1
-reverse(start, len(s) - 1)  # last word
+reverse(start, len(s) - 1)   # last word
 ```
 > Fully in-place, very interview-friendly!
 
