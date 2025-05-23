@@ -24,7 +24,7 @@ Output: 0  # empty string is always found at start
 ```
 ## Possible Solutions – Brute Force to Optimized
 ## 1) Brute Force – Compare Every Substring (O((h−n+1) * n) time, O(1) space)
-**Idea:** Try every possible starting index `i` in `haystack` and compare the substring `haystack[i:i+m]` to `needle`. If match → return `i`.
+**Idea:** Try every possible starting index `i` in `haystack` and compare the substring `haystack[i:i+n]` to `needle`. If match → return `i`.
 
 ```python
 h, n = len(haystack), len(needle)
