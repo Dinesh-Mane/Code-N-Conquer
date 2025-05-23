@@ -58,7 +58,7 @@ for c in s:
 return not st
 ```
 
-## 3) 3) Stack with Mapping Dictionary (O(n) time, O(n) space)  
+## 3) Stack with Mapping Dictionary (O(n) time, O(n) space)  
 **Idea:** Use a stack and a dictionary of matching pairs:
 ```python
 pairs = {')': '(', '}': '{', ']': '['}
