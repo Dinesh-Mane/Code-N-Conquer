@@ -75,6 +75,18 @@ def numOfStrings(patterns, word):
             count += 1
     return count
 ```
+OR
+```python
+def numOfStrings(self, patterns: List[str], word: str) -> int:
+    cnt = 0
+    for p in patterns:
+        for i in range(len(word)-len(p)+1):
+            if word[i:i+len(p)]==p:
+                cnt+=1
+                break
+    return cnt
+```
+
 
 **Time Complexity:** O(n * m * k), where k is length of each pattern  
 **Space Complexity:** O(1)  
