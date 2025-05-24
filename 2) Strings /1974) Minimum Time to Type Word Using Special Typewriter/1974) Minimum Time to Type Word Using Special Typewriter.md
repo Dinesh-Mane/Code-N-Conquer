@@ -7,7 +7,7 @@ You're using a special typewriter with only lowercase English letters arranged i
 - You can **type the character you're pointing at in 1 second**.
 - You can **move the pointer clockwise or counterclockwise to the next letter**, which also takes 1 second per step.
 
-🔧 Your task is: **Given a string `word`, return the minimum number of seconds to type it.**
+Your task is: **Given a string `word`, return the minimum number of seconds to type it.**
 
 ---
 
@@ -25,7 +25,7 @@ Output: 5
 Input: word = "cba"
 Output: 7
 # Explanation:
-# 'a' to 'c' = 2 moves (counterclockwise) + 1 to type
+# 'a' to 'c' = 2 moves (clockwise) + 1s to type
 # 'c' to 'b' = 1 move + 1s to type
 # 'b' to 'a' = 1 move + 1s to type → Total = 7s
 ```
@@ -33,8 +33,8 @@ Output: 7
 ```python
 Input: word = "zaza"
 Output: 8
-# 'a' to 'z' = 1 move (counterclockwise) + 1 to type
-# 'z' to 'a' = 1 move (clockwise) + 1 to type
+# 'a' to 'z' = 1 move (counterclockwise) + 1s to type
+# 'z' to 'a' = 1 move (clockwise) + 1s to type
 # 'a' to 'z' = 1 move + 1s to type
 # 'z' to 'a' = 1 move + 1s to type → Total = 8s
 ```
