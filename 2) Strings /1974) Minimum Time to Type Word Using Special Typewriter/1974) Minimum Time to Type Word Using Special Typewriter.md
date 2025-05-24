@@ -75,7 +75,8 @@ def minTimeToType(word):
 **Code:**
 ```python
 def minTimeToType(word):
-    return sum(min(abs(ord(word[i]) - ord(word[i-1])), 26 - abs(ord(word[i]) - ord(word[i-1]))) for i in range(1, len(word))) + len(word)
+    word = 'a' + word
+    return sum(min(abs(ord(word[i]) - ord(word[i-1])), 26 - abs(ord(word[i]) - ord(word[i-1]))) for i in range(1, len(word))) + len(word)-1
 ```
 
 **Time Complexity:** O(n)  
